@@ -3,9 +3,12 @@ package com.bridgingcode.springbootsqssnsdemo.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Names {
+public class Names implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     String[] names;
     LocalDateTime createdAt;
@@ -35,9 +38,5 @@ public class Names {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String toJsonString() throws JsonProcessingException {
-        return mapper.writeValueAsString(this);
     }
 }
