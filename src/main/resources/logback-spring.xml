@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="cloudwatchAppender" class="io.github.dibog.AwsLogAppender">
+        <createLogGroup>true</createLogGroup>
+        <groupName>bridgingcode</groupName>
+        <streamName>spring-boot-sqs-sns-demo</streamName>
+        <dateFormat>yyyyMMdd_HHmm</dateFormat>
+
+        <layout>
+            <pattern>[%thread] %-5level %logger{35} - %msg %n</pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.bridgingcode.springbootsqssnsdemo" level="info" additivity="false">
+        <appender-ref ref="cloudwatchAppender" />
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="cloudwatchAppender" />
+    </root>
+
+</configuration>
