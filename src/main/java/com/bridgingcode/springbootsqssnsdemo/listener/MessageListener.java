@@ -1,6 +1,7 @@
 package com.bridgingcode.springbootsqssnsdemo.listener;
 
 import com.bridgingcode.springbootsqssnsdemo.model.Names;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,8 @@ public class MessageListener {
     @SqsListener(value = "bridgingcode-queue", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
     public void messageListener(Names names) {
         try {
-            LOGGER.info("List of names received. Sorting...");
+            ObjectMapper objectMapper = new ObjectMapper();
+            LOGGER.info("List of names received {}. Sorting...", objectMapper.writeValueAsString(names));
             notificationMessagingTemplate.sendNotification("bridgingcode-notifications",
                     "List of names received. " + Arrays.toString(names.getNames()),
                     "Names notification");
@@ -31,7 +33,7 @@ public class MessageListener {
             Arrays.sort(names.getNames());
             names.setUpdatedAt(LocalDateTime.now());
 
-            LOGGER.info("Sorted. {}", Arrays.toString(names.getNames()));
+            LOGGER.info("Sorted. {}", objectMapper.writeValueAsString(names));
             notificationMessagingTemplate.sendNotification("bridgingcode-notifications",
                     "List of names sorted. " + Arrays.toString(names.getNames()),
                     "Names notification");
