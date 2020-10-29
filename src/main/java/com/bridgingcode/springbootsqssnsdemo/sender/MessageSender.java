@@ -20,14 +20,16 @@ public class MessageSender {
     @PostMapping("/sendNames")
     public ResponseEntity<String> sendNames(@RequestBody Names names) {
         try {
-            names.setCreatedAt(LocalDateTime.now());
-            names.setUpdatedAt(LocalDateTime.now());
+            LocalDateTime now = LocalDateTime.now();
+
+            names.setCreatedAt(now);
+            names.setUpdatedAt(now);
 
             queueMessagingTemplate.convertAndSend("bridgingcode-queue", names);
 
             return new ResponseEntity<>("Sent.", HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
